@@ -1,7 +1,7 @@
 Summary:	Xorg wrapper
 Name:		xorg-launch-helper
 Version:	3
-Release:	2.2
+Release:	4
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://foo-projects.org/~sofar/xorg-launch-helper/%{name}-%{version}.tar.gz
