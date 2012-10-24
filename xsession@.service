@@ -1,0 +1,19 @@
+[Unit]
+Description=Direct Xsession login for user %I
+After=graphical.target systemd-user-sessions.service
+Wants=xorg.service
+
+[Service]
+User=%I
+PAMName=login
+Type=notify
+TTYPath=/dev/tty1
+EnvironmentFile=-%h/.config/environment
+Environment=DISPLAY=:0.0
+Environment=XDG_RUNTIME_DIR=/run/user/%I
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%I/dbus/user_bus_socket
+ExecStart=/usr/lib/systemd/systemd --user
+
+[Install]
+WantedBy=graphical.target
+

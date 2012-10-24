@@ -1,13 +1,16 @@
 Summary:	Xorg wrapper
 Name:		xorg-launch-helper
-Version:	3
-Release:	4
+Version:	4
+Release:	1
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://foo-projects.org/~sofar/xorg-launch-helper/%{name}-%{version}.tar.gz
-# Source0-md5:	6a9fdde4d4b28fc775d0828f793edd52
+# Source0-md5:	074e81a0817e460e1fefa738ee9c3cbb
+Source1:	xsession@.service
 BuildRequires:	pkg-config
 BuildRequires:	systemd-devel
+Requires:	systemd
+Requires:	xorg-xserver-server
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -26,6 +29,12 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+install -D %{SOURCE1} $RPM_BUILD_ROOT%{systemdunitdir}/xsession@.service
+
+# run as a system service
+mv $RPM_BUILD_ROOT%{_prefix}/lib/systemd/user/xorg.service \
+	$RPM_BUILD_ROOT%{systemdunitdir}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -33,5 +42,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_bindir}/*
-/usr/lib/systemd/user/xorg.*
+%{systemdunitdir}/xorg.service
+%{systemdunitdir}/xsession@.service
 
